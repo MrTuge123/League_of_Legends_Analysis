@@ -3,7 +3,6 @@
 **Authors:**
 - Xingzhi Cui ([tigercui@umich.edu](mailto:tigercui@umich.edu))
 - Yun Jong Na ([kevinyjn@umich.edu](mailto:kevinyjn@umich.edu))
-**Email:** tigercui@umich.edu, kevinyjn@umich.edu
 
 ---
 
