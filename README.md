@@ -20,23 +20,32 @@
 
 ## Introduction
 
-In this project, we explore whether in-game features at the 25 minute cutoff can accurately predict the outcome (win/loss) of League of Legends matches. Our dataset consists of approximately **868** matches in 2024 sourced from OraclesElixir, which is a public dataset under Riot Games, containing information on champion selections, team compositions, player roles, and match metadata.
+In this project, we explore whether in-game features at the 25 minute cutoff can accurately predict the outcome (win/loss) of League of Legends matches. Our full dataset consists of approximately **9800** matches in 2024 sourced from OraclesElixir, which is a public dataset under Riot Games, containing information on champion selections, team compositions, player roles, and match metadata.
 
 - **Central Question:** Can a classification model leverage in-game kills, gold, experience information at the 25 minute checkpoint to predict the game result?
 - **Motivation:** Predictive insights can inform esports strategy and enhance spectator engagement by offering data-driven match forecasts.  
 - **Dataset Details:**  
-  - **Rows:** 1736, 2 rows per game
-  - **Features:**
-    - `goldat25`: Team's total gold collected by minute 25
-    - `xpat25`: Team's total experience points gained by minute 25
-    - `csat25`: Team's total creep score (minion kills) by minute 25
-    - `opp_goldat25`: Opponent team's total gold at minute 25
-    - `opp_xpat25`: Opponent team's total experience at minute 25
-    - `opp_csat25`: Opponent team's total creep score at minute 25
-    - `killsat25`: Total kills achieved by the team by minute 25
-    - `opp_killsat25`: Total kills achieved by the opponent team by minute 25
+  - **Rows:** 117600, 2 rows per game
+  - **Relavant Features:**
+    - `gameid`: A unique identifier for each game
+    - `goldat25`: Team’s total gold collected by minute 25  
+    - `xpat25`: Team’s total experience points gained by minute 25  
+    - `csat25`: Team’s total creep score (minion kills) by minute 25  
+    - `killsat25`: Total kills achieved by the team by minute 25  
+    - `assistsat25`: Total assists by the team by minute 25  
+    - `deathsat25`: Total deaths suffered by the team by minute 25 
+    - `opp_goldat25`: Opponent team’s total gold collected by minute 25  
+    - `opp_xpat25`: Opponent team’s total experience points gained by minute 25  
+    - `opp_csat25`: Opponent team’s total creep score by minute 25  
+    - `opp_killsat25`: Total kills achieved by the opponent team by minute 25  
+    - `opp_assistsat25`: Total assists by the opponent team by minute 25  
+    - `opp_deathsat25`: Total deaths suffered by the opponent team by minute 25 
+    - `golddiffat25`: Gold difference at minute 25 (`goldat25 – opp_goldat25`)  
+    - `xpdiffat25`: Experience difference at minute 25 (`xpat25 – opp_xpat25`)  
+    - `csdiffat25`: Creep score difference at minute 25 (`csat25 – opp_csat25`)  
+    
   - **Target Variable:** `result` (win = 1, loss = 0)  
-  - **Relevance:** Accurate prediction models support coaches and analysts in optimizing in-game decisions and contribute to the broader field of sports analytics.
+  - **Relevance:** Accurate prediction models support coaches and analysts in optimizing in‑game decisions and contribute to the broader field of sports analytics.
 ---
 
 ## Data Cleaning and Exploratory Data Analysis
@@ -50,12 +59,39 @@ In this project, we explore whether in-game features at the 25 minute cutoff can
 - Removed time‑static variables (e.g. total dragons slain).  
 - Dropped perfectly collinear stats (ex: `killsAs25` vs. `opp_deathsAt25`) to aid interpretability.
 
-3. **Missing‑Value Handling**
+3. **Imputation Strategies and Missing‑Value Handling**
 - **Assessment of missingness:** We found that rows lacking any 25‑minute metric (gold, kills, objectives, etc.) account for roughly **46.58%** of our team‑level data.
 - **Rationale for dropping:** A missing 25‑minute value indicates that the game state wasn’t recorded at that cut‑off, so these rows contain no usable mid‑game information. Imputing them would introduce unfounded assumptions, so we removed all records with missing 25‑minute features. ​
 
+**Head of Cleaned Data:**
+
+| gameid          |   result |   goldat25 |   xpat25 |   csat25 |   killsat25 |   deathsat25 |   opp_goldat25 |   opp_xpat25 |   opp_csat25 |
+|:----------------|---------:|-----------:|---------:|---------:|------------:|-------------:|---------------:|-------------:|-------------:|
+| LOLTMNT06_13630 |        0 |      45581 |    53080 |      904 |           9 |            7 |          44394 |        55632 |          899 |
+| LOLTMNT06_13630 |        1 |      44394 |    55632 |      899 |           7 |            9 |          45581 |        53080 |          904 |
+| LOLTMNT06_12701 |        0 |      40305 |    50828 |      864 |           4 |            9 |          44748 |        57191 |          878 |
+| LOLTMNT06_12701 |        1 |      44748 |    57191 |      878 |           9 |            4 |          40305 |        50828 |          864 |
+| LOLTMNT06_13667 |        0 |      43673 |    55802 |      900 |           6 |            7 |          42984 |        54096 |          893 |
+
+
 ### TODO: Univariate Analysis
 
-### TODO: Bivariate Analysis
+### TODO: Bivariate Analyses and Aggregations
+
+
+
+## Forming the Prediction Problem
+
+- **Task:** Binary classification of match outcome, `result` (1 = win, 0 = loss).  
+- **Features:** All in‑game metrics available at the 25 minute mark **after** the filtering and cleaning steps described in [Data Cleaning and Exploratory Data Analysis](#data-cleaning-and-exploratory-data-analysis). We exclude any variables that aren’t known at minute 25 (e.g. final kill totals).  
+- **Evaluation Metric:** **Accuracy**, defined as the proportion of correct predictions:
+  \[
+    \text{Accuracy}
+    = \frac{\text{Number of correct predictions}}{\text{Total number of predictions}}
+    = \frac{1}{N}\sum_{i=1}^{N} \mathbf{1}\bigl(y_i = \hat y_i\bigr),
+  \]
+  where \(y_i\) is the true label and \(\hat y_i\) is the model’s prediction.  
+- **Prediction Question:**  
+  > Can a classifier, given only kills, gold, XP, creep‑score, and objective metrics at minute 25, accurately predict which team will win the match?
 
 
