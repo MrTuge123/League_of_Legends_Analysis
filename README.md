@@ -75,11 +75,11 @@ In this project, we explore whether in-game features at the 25 minute cutoff can
 | LOLTMNT06_13667 |        0 |      43673 |    55802 |      900 |           6 |            7 |          42984 |        54096 |          893 |
 
 
-### TODO: Univariate Analysis
+**TODO: Univariate Analysis**
 
-### TODO: Bivariate Analyses and Aggregations
+**TODO: Bivariate Analyses and Aggregations**
 
-### Issues with Multicollinearity
+**Issues with Multicollinearity**
 
 Even after dropping the most obvious redundancies, many of our 25‑minute features remain highly correlated. For example, teams that secure more kills typically accumulate more gold and experience, while opponents with higher death counts correspondingly lag behind. This interdependence can lead to unstable coefficient estimates in a standard logistic regression. Therefore, in the following regression models, we will need to either address these issues or interpret the results with causion. 
 
@@ -107,7 +107,7 @@ Even after dropping the most obvious redundancies, many of our 25‑minute featu
 
 To establish a performance benchmark, we trained a **simple logistic regression** on our 25‑minute features.  
 
-### 1. Data Partitioning  
+**1. Data Partitioning**  
 We split the cleaned dataset into training (70%) and test (30%) sets, preserving the win/loss balance via stratification:
 
 ```python
