@@ -44,8 +44,9 @@ In this project, we explore whether in-game features at the 25 minute cutoff can
     - `csdiffat25`: Creep score difference at minute 25 (`csat25 – opp_csat25`)  
     
   - **Target Variable:** `result` (win = 1, loss = 0)  
-  - **Relevance:** Accurate prediction models support coaches and analysts in optimizing in‑game decisions and contribute to the broader field of sports analytics.
   
+  - **Relevance:** Accurate prediction models support coaches and analysts in optimizing in‑game decisions and contribute to the broader field of sports analytics.
+
 ---
 
 ## Data Cleaning and Exploratory Data Analysis
