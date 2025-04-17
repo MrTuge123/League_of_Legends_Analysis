@@ -79,7 +79,7 @@ In this project, we explore whether in-game features at the 25 minute cutoff can
 
 
 
-## Forming the Prediction Problem
+## Framing a Prediction Problem
 
 - **Task:** Binary classification of match outcome, `result` (1 = win, 0 = loss).  
 - **Features:** All in‑game metrics available at the 25 minute mark **after** the filtering and cleaning steps described in [Data Cleaning and Exploratory Data Analysis](#data-cleaning-and-exploratory-data-analysis). We exclude any variables that aren’t known at minute 25 (e.g. final kill totals).  
@@ -92,5 +92,32 @@ In this project, we explore whether in-game features at the 25 minute cutoff can
   where \(y_i\) is the true label and \(\hat y_i\) is the model’s prediction.  
 - **Prediction Question:**  
   > Can a classifier, given only kills, gold, XP, creep‑score, and objective metrics at minute 25, accurately predict which team will win the match?
+
+
+
+## Baseline Model
+**Code:**
+
+```python
+#Baseline Model
+pipeline = make_pipeline(
+    StandardScaler(),
+    LogisticRegressionCV(cv=5, penalty='l1', solver='liblinear', random_state=398)
+)
+
+# Fit the pipeline on the training data
+pipeline.fit(X_train, y_train)
+
+# Predict on the test set
+y_pred = pipeline.predict(X_test)
+testing_accuracy = accuracy_score(y_test, y_pred)
+roc_auc = roc_auc_score(y_test, pipeline.decision_function(X_test))
+
+# Extract the logistic regression estimator from the pipeline
+log_reg_cv = pipeline.named_steps['logisticregressioncv']
+num_non_zero = np.count_nonzero(log_reg_cv.coef_[0])
+```
+
+
 
 
