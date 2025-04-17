@@ -106,6 +106,8 @@ Even after dropping the most obvious redundancies, many of our 25‑minute featu
 We form a training set and a testing set using the `train_test_split` function, setting `test_size` to 0.3 to form a 30%-70% split between the testing and training data. These data will hold for all following models.
 
 ```python
+y = data['result']
+X = data[['goldat25', 'xpat25', 'csat25', 'killsat25','deathsat25', 'opp_goldat25', 'opp_xpat25', 'opp_csat25']]
 X_train, X_test, y_train, y_test = train_test_split(X,y,test_size = 0.3,random_state=123) 
 ```
 
@@ -147,6 +149,14 @@ new_row = {
 Model_selection_df = pd.concat([Model_selection_df, pd.DataFrame([new_row])], ignore_index=True)
 ```
 
+**Model Information**
+| Data Type     |Features                                                                                                                                     | Processing Method  |
+|---------------|----------------------------------------------------------------------------------------------------------------------------------------------|--------------------|
+| Quantitative  | `goldat25`, `xpat25`, `csat25`, `killsat25`, `deathsat25`, `opp_goldat25`, `opp_xpat25`, `opp_csat25`                                        | `StandardScaler`   |
+| Ordinal       | —                                                                                                                                            | —                  |
+| Nominal       | —                                                                                                                                            | —                  |
+
+
 **Results Output**
 
 | Model Name                                   |   num_non_zero |   training_accuracy |   testing_accuracy |   ROC_accuracy |
@@ -154,7 +164,8 @@ Model_selection_df = pd.concat([Model_selection_df, pd.DataFrame([new_row])], ig
 | Baseline_Simple_Logistic_Regression          |              8 |            0.839506 |           0.817658 |       0.91107  |
 
 **Model Analysis**
-Although the model showed a decent accuracy 
+
+Although the model showed a decent training and testing accuracy and a high ROC accuracy, the simple logistic regression didn't account for potential multicolinearity
 
 
 
