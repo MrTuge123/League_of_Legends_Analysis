@@ -166,6 +166,7 @@ results = {
 ```
 
 **Model Information**
+
 | Data Type    | Features                                                                                                       | Processing Method |
 |--------------|----------------------------------------------------------------------------------------------------------------|-------------------|
 | Quantitative | `goldat25`, `xpat25`, `csat25`, `killsat25`, `deathsat25`,<br>`opp_goldat25`, `opp_xpat25`, `opp_csat25`      | `StandardScaler`  |
