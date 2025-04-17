@@ -84,11 +84,11 @@ In this project, we explore whether in-game features at the 25 minute cutoff can
 - **Task:** Binary classification of match outcome, `result` (1 = win, 0 = loss).  
 - **Features:** All in‑game metrics available at the 25 minute mark **after** the filtering and cleaning steps described in [Data Cleaning and Exploratory Data Analysis](#data-cleaning-and-exploratory-data-analysis). We exclude any variables that aren’t known at minute 25 (e.g. final kill totals).  
 - **Evaluation Metric:** **Accuracy**, defined as the proportion of correct predictions:
-  \[
+  $$
     \text{Accuracy}
     = \frac{\text{Number of correct predictions}}{\text{Total number of predictions}}
     = \frac{1}{N}\sum_{i=1}^{N} \mathbf{1}\bigl(y_i = \hat y_i\bigr),
-  \]
+  $$
   where \(y_i\) is the true label and \(\hat y_i\) is the model’s prediction.  
 - **Prediction Question:**  
   > Can a classifier, given only kills, gold, XP, creep‑score, and objective metrics at minute 25, accurately predict which team will win the match?
