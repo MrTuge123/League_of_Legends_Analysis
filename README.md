@@ -77,6 +77,12 @@ In this project, we explore whether in-game features at the 25 minute cutoff can
 
 ### TODO: Bivariate Analyses and Aggregations
 
+### Issues with Multicollinearity
+
+Even after dropping the most obvious redundancies, many of our 25‑minute features remain highly correlated. For example, teams that secure more kills typically accumulate more gold and experience, while opponents with higher death counts correspondingly lag behind. This interdependence can lead to unstable coefficient estimates in a standard logistic regression. Therefore, in the following regression models, we will need to either address these issues or interpret the results with causion. 
+
+![Correlation Matrix of Features](images/corr_matrix.png)
+
 
 
 ## Framing a Prediction Problem
@@ -96,6 +102,13 @@ In this project, we explore whether in-game features at the 25 minute cutoff can
 
 
 ## Baseline Model
+**Data Preprocessing:**
+We form a training set and a testing set using the `train_test_split` function, setting `test_size` to 0.3 to form a 30%-70% split between the testing and training data. These data will hold for all following models.
+
+```python
+X_train, X_test, y_train, y_test = train_test_split(X,y,test_size = 0.3,random_state=123) 
+```
+
 **Code:**
 
 ```python
@@ -116,7 +129,32 @@ roc_auc = roc_auc_score(y_test, pipeline.decision_function(X_test))
 # Extract the logistic regression estimator from the pipeline
 log_reg_cv = pipeline.named_steps['logisticregressioncv']
 num_non_zero = np.count_nonzero(log_reg_cv.coef_[0])
+roc_auc = roc_auc_score(y_test, pipeline.decision_function(X_test))
+
+# Evaluate on training data
+y_train_pred = pipeline.predict(X_train)
+training_accuracy = accuracy_score(y_train, y_train_pred)
+
+# Append model results to the results dataframe
+new_row = {
+    'Model Name': 'Baseline_Simple_Logistic_Regression',
+    'num_non_zero': num_non_zero,
+    'training_accuracy': training_accuracy,
+    'testing_accuracy': testing_accuracy,
+    'ROC_accuracy': roc_auc
+}
+
+Model_selection_df = pd.concat([Model_selection_df, pd.DataFrame([new_row])], ignore_index=True)
 ```
+
+**Results Output**
+
+| Model Name                                   |   num_non_zero |   training_accuracy |   testing_accuracy |   ROC_accuracy |
+|:---------------------------------------------|---------------:|--------------------:|-------------------:|---------------:|
+| Baseline_Simple_Logistic_Regression          |              8 |            0.839506 |           0.817658 |       0.91107  |
+
+**Model Analysis**
+Although the model showed a decent accuracy 
 
 
 
