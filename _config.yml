@@ -4,3 +4,8 @@ plugins:
 
 title: [Categorization Model of Predicting LOL Game Outcomes]
 description: [A short description of your site's purpose]
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  math_engine: mathjax
