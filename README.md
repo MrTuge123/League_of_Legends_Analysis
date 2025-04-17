@@ -102,51 +102,67 @@ Even after dropping the most obvious redundancies, many of our 25‑minute featu
 
 
 ## Baseline Model
-**Data Preprocessing:**
-We form a training set and a testing set using the `train_test_split` function, setting `test_size` to 0.3 to form a 30%-70% split between the testing and training data. These data will hold for all following models.
+
+To establish a performance benchmark, we trained a **simple logistic regression** on our 25‑minute features.  
+
+### 1. Data Partitioning  
+We split the cleaned dataset into training (70%) and test (30%) sets, preserving the win/loss balance via stratification:
 
 ```python
+from sklearn.model_selection import train_test_split
+
 y = data['result']
-X = data[['goldat25', 'xpat25', 'csat25', 'killsat25','deathsat25', 'opp_goldat25', 'opp_xpat25', 'opp_csat25']]
-X_train, X_test, y_train, y_test = train_test_split(X,y,test_size = 0.3,random_state=123) 
+X = data[[
+    'goldat25', 'xpat25', 'csat25',
+    'killsat25', 'deathsat25',
+    'opp_goldat25', 'opp_xpat25', 'opp_csat25'
+]]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.30,
+    stratify=y,
+    random_state=123
+)
 ```
 
-**Code:**
+**Baseline Model Pipeline:**
 
 ```python
-#Baseline Model
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, roc_auc_score
+import numpy as np
+
 pipeline = make_pipeline(
     StandardScaler(),
-    LogisticRegressionCV(cv=5, penalty='l1', solver='liblinear', random_state=398)
+    LogisticRegression(
+        penalty='l2',
+        solver='liblinear',
+        random_state=398
+    )
 )
 
-# Fit the pipeline on the training data
 pipeline.fit(X_train, y_train)
 
-# Predict on the test set
-y_pred = pipeline.predict(X_test)
-testing_accuracy = accuracy_score(y_test, y_pred)
-roc_auc = roc_auc_score(y_test, pipeline.decision_function(X_test))
-
-# Extract the logistic regression estimator from the pipeline
-log_reg_cv = pipeline.named_steps['logisticregressioncv']
-num_non_zero = np.count_nonzero(log_reg_cv.coef_[0])
-roc_auc = roc_auc_score(y_test, pipeline.decision_function(X_test))
-
-# Evaluate on training data
+# Predictions
+y_test_pred = pipeline.predict(X_test)
 y_train_pred = pipeline.predict(X_train)
-training_accuracy = accuracy_score(y_train, y_train_pred)
 
-# Append model results to the results dataframe
-new_row = {
-    'Model Name': 'Baseline_Simple_Logistic_Regression',
-    'num_non_zero': num_non_zero,
-    'training_accuracy': training_accuracy,
-    'testing_accuracy': testing_accuracy,
-    'ROC_accuracy': roc_auc
+# Metrics
+test_acc   = accuracy_score(y_test,   y_test_pred)
+train_acc  = accuracy_score(y_train,  y_train_pred)
+roc_auc    = roc_auc_score(y_test,    pipeline.decision_function(X_test))
+num_coeffs = np.count_nonzero(pipeline.named_steps['logisticregression'].coef_)
+
+# Tabulate results
+results = {
+    'Train Accuracy': train_acc,
+    'Test Accuracy':  test_acc,
+    'ROC‑AUC':        roc_auc,
+    'Non‑zero Coeff': num_coeffs
 }
-
-Model_selection_df = pd.concat([Model_selection_df, pd.DataFrame([new_row])], ignore_index=True)
 ```
 
 **Model Information**
@@ -165,7 +181,7 @@ Model_selection_df = pd.concat([Model_selection_df, pd.DataFrame([new_row])], ig
 
 **Model Analysis**
 
-Although the model showed a decent training and testing accuracy and a high ROC accuracy, the simple logistic regression didn't account for potential multicolinearity
+The baseline logistic regression achieves 84.0% accuracy on the training set and 81.8% on the test set, with a ROC‑AUC of 0.911—indicating strong overall discrimination between wins and losses. However, the presence of multicollinearity among mid‑game features, as indicated in ![Issues with Multicollinearity](#issues-with-multicollinearity), suggests that regularized models or dimensionality‑reduction techniques may further improve stability and performance in subsequent modeling steps.
 
 
 
