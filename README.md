@@ -187,6 +187,9 @@ results = {
 
 The baseline logistic regression achieves 84.0% accuracy on the training set and 81.8% on the test set, with a ROC‑AUC of 0.911—indicating strong overall discrimination between wins and losses. However, the presence of multicollinearity among mid‑game features, as indicated in [Issues with Multicollinearity](#issues-with-multicollinearity), suggests that regularized models or dimensionality‑reduction techniques may further improve stability and performance in subsequent modeling steps.
 
+<iframe src="Distribution_of_Gold_Difference_at_25_Minutes.svg" width="800" height="600" frameborder="0" ></iframe>
+
+
 
 
 
