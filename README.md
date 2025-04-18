@@ -76,8 +76,11 @@ In this project, we explore whether in-game features at the 25 minute cutoff can
 
 
 **TODO: Univariate Analysis**
+<iframe src="images/fig_uni1.html" width="800" height="600" frameborder="0" ></iframe>
+
 
 **TODO: Bivariate Analyses and Aggregations**
+
 
 ### Issues with Multicollinearity
 
@@ -187,16 +190,5 @@ results = {
 
 The baseline logistic regression achieves 84.0% accuracy on the training set and 81.8% on the test set, with a ROC‑AUC of 0.911—indicating strong overall discrimination between wins and losses. However, the presence of multicollinearity among mid‑game features, as indicated in [Issues with Multicollinearity](#issues-with-multicollinearity), suggests that regularized models or dimensionality‑reduction techniques may further improve stability and performance in subsequent modeling steps.
 
-![Uni visualization](images/images/fig_uni1.png)
-
-<iframe src="images/fig_uni1.html" width="800" height="600" frameborder="0" ></iframe>
-
-
- <iframe
- src="images/fig_uni1.html"
- width="800"
- height="600"
- frameborder="0"
- ></iframe>
 
 
