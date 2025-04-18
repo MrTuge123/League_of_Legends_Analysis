@@ -192,6 +192,11 @@ The baseline logistic regression achieves 84.0% accuracy on the training set and
 <iframe src="images/fig_uni1.html" width="800" height="600" frameborder="0" ></iframe>
 
 
-
+ <iframe
+ src="images/fig_uni1.html"
+ width="800"
+ height="600"
+ frameborder="0"
+ ></iframe>
 
 
