@@ -81,7 +81,7 @@ In this project, we explore whether in-game features at the 25 minute cutoff can
 **TODO: Bivariate Analyses and Aggregations**
 <iframe src="images/figbi1.html" width="800" height="600" frameborder="0" ></iframe>
 
-<iframe src="images/aggregate_table.html" width="800" height="600" frameborder="0" ></iframe>
+<iframe src="assets/aggregate_table.html" width="800" height="400" frameborder="0"></iframe>
 
 
 ### Issues with Multicollinearity
