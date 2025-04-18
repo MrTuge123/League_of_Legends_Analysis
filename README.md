@@ -66,6 +66,7 @@ In this project, we explore whether in-game features at the 25 minute cutoff can
 
 **Head of Cleaned Data:**
 
+```
 | gameid          |   result |   goldat25 |   xpat25 |   csat25 |   killsat25 |   deathsat25 |   opp_goldat25 |   opp_xpat25 |   opp_csat25 |
 |:----------------|---------:|-----------:|---------:|---------:|------------:|-------------:|---------------:|-------------:|-------------:|
 | LOLTMNT06_13630 |        0 |      45581 |    53080 |      904 |           9 |            7 |          44394 |        55632 |          899 |
@@ -73,7 +74,7 @@ In this project, we explore whether in-game features at the 25 minute cutoff can
 | LOLTMNT06_12701 |        0 |      40305 |    50828 |      864 |           4 |            9 |          44748 |        57191 |          878 |
 | LOLTMNT06_12701 |        1 |      44748 |    57191 |      878 |           9 |            4 |          40305 |        50828 |          864 |
 | LOLTMNT06_13667 |        0 |      43673 |    55802 |      900 |           6 |            7 |          42984 |        54096 |          893 |
-
+```
 
 **TODO: Univariate Analysis**
 
@@ -169,19 +170,21 @@ results = {
 
 **Model Information**
 
+```
 | Data Type    | Features                                                                                                       | Processing Method |
 |--------------|----------------------------------------------------------------------------------------------------------------|-------------------|
 | Quantitative | `goldat25`, `xpat25`, `csat25`, `killsat25`, `deathsat25`,<br>`opp_goldat25`, `opp_xpat25`, `opp_csat25`      | `StandardScaler`  |
 | Ordinal      | –                                                                                                              | –                 |
 | Nominal      | –                                                                                                              | –                 |
-
+```
 
 
 **Results Output**
-
+```
 | Model Name                                   |   num_non_zero |   training_accuracy |   testing_accuracy |   ROC_accuracy |
 |:---------------------------------------------|---------------:|--------------------:|-------------------:|---------------:|
 | Baseline_Simple_Logistic_Regression          |              8 |            0.839506 |           0.817658 |       0.91107  |
+```
 
 **Model Analysis**
 
