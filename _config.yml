@@ -2,5 +2,5 @@ remote_theme: pages-themes/cayman@v0.2.0
 plugins:
 - jekyll-remote-theme
 
-title: [Checkpoint Champion -- Predicting Winners at 25]
+title: "Checkpoint Champion -- Predicting Winners at 25"
 description: [A data‑driven predictor that forecasts League of Legends match winners at the pivotal 25‑minute mark using key mid‑game statistics and LASSO logistic regression]
