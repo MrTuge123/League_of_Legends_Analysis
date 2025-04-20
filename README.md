@@ -12,8 +12,8 @@
 2. [Data Cleaning and Exploratory Data Analysis](#data-cleaning-and-exploratory-data-analysis)  
 3. [Framing a Prediction Problem](#framing-a-prediction-problem)  
 4. [Baseline Model](#baseline-model)  
-5. [Final Model](#final-model)  
-6. [Installation & Usage](#installation--usage)
+5. [Testing for Potential Improvement](#potential-improvement)  
+6. [Model Comparison and Final Selection](#final-model)
 
 ---
 
@@ -42,6 +42,9 @@ In this project, we explore whether in-game features at the 25 minute cutoff can
     - `golddiffat25`: Gold difference at minute 25 (`goldat25 – opp_goldat25`)  
     - `xpdiffat25`: Experience difference at minute 25 (`xpat25 – opp_xpat25`)  
     - `csdiffat25`: Creep score difference at minute 25 (`csat25 – opp_csat25`)  
+    - `side`: Team side designation (Blue or Red), which can influence draft priority and map control  
+    - `gamelength`: Total duration of the match, in seconds, capturing overall game pace  
+    - `league`: Regional league or tournament in which the match was played (e.g., LCK, LPL, LEC)  
     
   - **Target Variable:** `result` (win = 1, loss = 0)  
   
@@ -84,7 +87,7 @@ In this project, we explore whether in-game features at the 25 minute cutoff can
 
 
 
-### Issues with Multicollinearity
+-**Issues with Multicollinearity**
 
 Even after dropping the most obvious redundancies, many of our 25‑minute features remain highly correlated. For example, teams that secure more kills typically accumulate more gold and experience, while opponents with higher death counts correspondingly lag behind. This interdependence can lead to unstable coefficient estimates in a standard logistic regression. Therefore, in the following regression models, we will need to either address these issues or interpret the results with caution. 
 
@@ -195,7 +198,7 @@ The baseline logistic regression achieves 80.94% accuracy on the training set an
 
 ## Testing for Potential Improvement
 
-### Feature Engineering
+-**Feature Engineering**
 
 To enrich our predictive signal, we extended the feature set as follows:
 
@@ -208,7 +211,7 @@ To enrich our predictive signal, we extended the feature set as follows:
 
 ---
 
-### Addressing Multicollinearity
+-**Addressing Multicollinearity**
 
 Our initial OLS‑based logistic regression revealed unstable coefficient estimates under high predictor correlation. Multicollinearity inflates variance, undermines interpretability, and can degrade out‑of‑sample performance.
 
@@ -228,12 +231,12 @@ Each approach offers a robust mechanism for stabilizing estimates and improving 
 
 ## Model Comparison and Final Selection
 
-| Model Name                                   | num_non_zero | training_accuracy | testing_accuracy | ROC_accuracy |
-|----------------------------------------------|-------------:|------------------:|-----------------:|-------------:|
-| Baseline_Simple_Logistic_Regression          |            5 |           0.8094  |          0.8125  |       0.8976 |
-| LogisticRegressionCV_L1                      |            9 |           0.8370  |          0.8365  |       0.9215 |
-| Ridge_LogisticRegressionCV                   |           58 |           0.8359  |          0.8365  |       0.9218 |
-| LogisticRegression_RFECV_BackwardElimination |            5 |           0.8355  |          0.8340  |       0.9207 |
+| Model Name                                   |   num_non_zero |   training_accuracy |   testing_accuracy |   ROC_accuracy |
+|:---------------------------------------------|---------------:|--------------------:|-------------------:|---------------:|
+| Baseline_Simple_Logistic_Regression          |              5 |            0.809433 |           0.812473 |       0.897624 |
+| LogisticRegressionCV_L1                      |              9 |            0.835888 |           0.8361   |       0.921376 |
+| Ridge_LogisticRegressionCV                   |             57 |            0.835979 |           0.836526 |       0.921788 |
+| LogisticRegression_RFECV_BackwardElimination |              5 |            0.835523 |           0.833972 |       0.920703 |
 
 **Key Observations:**
 
@@ -249,21 +252,22 @@ We select the **LASSO Logistic Regression** as our final model because it:
 2. **Mitigates multicollinearity** by zeroing out redundant features.  
 3. **Enhances interpretability** by focusing on the most informative mid‑game metrics.
 
-In the next section, we present the trained LASSO model’s coefficients and interpret their relative importance.  
+
 
 
 ```python
-cols = [['gameid','result','goldat25', 'xpat25', 'csat25', 'killsat25','deathsat25', 'opp_goldat25', 'opp_xpat25', 'opp_csat25', 'side' ,'gamelength', 'league']]
+data['side_binary'] = data['side'].map({'Blue': 0, 'Red': 1})
+cols = [['gameid','result','goldat25', 'xpat25', 'csat25', 'killsat25','deathsat25', 'opp_goldat25', 'opp_xpat25', 'opp_csat25', 'side_binary' ,'gamelength', 'league']]
 data = data[cols]
 y = data['result']
-X = data[['goldat25', 'xpat25', 'csat25', 'killsat25','deathsat25', 'opp_goldat25', 'opp_xpat25', 'opp_csat25', 'side' ,'gamelength', 'league']]
+X = data[['goldat25', 'xpat25', 'csat25', 'killsat25','deathsat25', 'opp_goldat25', 'opp_xpat25', 'opp_csat25', 'side_binary' ,'gamelength', 'league']]
 X_train, X_test, y_train, y_test = train_test_split(X,y,test_size = 0.3,random_state=103) 
 
-numeric_feats = columns_to_check + ['gamelength']
-categorical_feats = ['league', 'side']
+numeric_feats = ['goldat25', 'xpat25', 'csat25', 'killsat25','deathsat25', 'opp_goldat25', 'opp_xpat25', 'opp_csat25', 'side_binary' ,'gamelength']
+categorical_feats = ['league']
 
 preprocessor = ColumnTransformer([
-    ('num', StandardScaler(),           numeric_feats),
+    ('num', StandardScaler(), numeric_feats),
     ('cat', OneHotEncoder(handle_unknown='ignore'), categorical_feats)
 ], remainder='drop') 
 
@@ -307,3 +311,10 @@ new_row = {
 
 Model_selection_df.loc[len(Model_selection_df)] = new_row
 ```
+-**Model Properties**
+| Data Type    | Features                                                                                                                                                                                           | Processing Method      |
+|--------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------|
+| Quantitative | `goldat25`, `xpat25`, `csat25`, `killsat25`, `deathsat25`,<br>`opp_goldat25`, `opp_xpat25`, `opp_csat25`, `opp_killsat25`, `opp_assistsat25`, `opp_deathsat25`,<br>`golddiffat25`, `xpdiffat25`, `csdiffat25`,<br>`gamelength`, `side_binary` | `StandardScaler`       |
+| Nominal      | `league` (one‑hot encoded)                                                                                                                                                                        | `OneHotEncoder`        |
+| Ordinal      | –   
+
