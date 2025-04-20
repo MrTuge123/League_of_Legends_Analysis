@@ -238,20 +238,21 @@ Each approach offers a robust mechanism for stabilizing estimates and improving 
 | Ridge_LogisticRegressionCV                   |             57 |            0.835979 |           0.836526 |       0.921788 |
 | LogisticRegression_RFECV_BackwardElimination |              5 |            0.835523 |           0.833972 |       0.920703 |
 
+
 **Key Observations:**
 
-- The **L1‑penalized** (LASSO) model matches the highest test accuracy (83.65%) and AUC (0.9215), using only **9** non‑zero coefficients.  
-- The **Ridge** model attains similar performance metrics but retains **58** coefficients, increasing complexity and overfitting risk.  
+- The **L1‑penalized** (LASSO) model matches the highest test accuracy (83.61%) and AUC (0.9214), using only **9** non‑zero coefficients.  
+- The **Ridge** model attains similar performance metrics but retains **57** coefficients, increasing complexity and overfitting risk.  
 - The **RFECV** approach yields a very sparse model (5 features) but with slightly lower test accuracy (83.40%) and AUC (0.9207).  
 - The **Baseline** logistic regression lags behind on both accuracy and discrimination (AUC).
 
 **Final Model Choice:**  
-We select the **LASSO Logistic Regression** as our final model because it:
+We select the **LASSO Logistic Regression** as our final model based on its superior balance of performance, sparsity, and stability:
 
-1. **Balances performance and sparsity**—achieving top-tier accuracy and AUC with a modest number of predictors.  
-2. **Mitigates multicollinearity** by zeroing out redundant features.  
-3. **Enhances interpretability** by focusing on the most informative mid‑game metrics.
-
+1. **Strong performance lift**—achieves **83.61%** test accuracy (up from 81.25% with the baseline) and **ROC‑AUC = 0.9214** (up from 0.8976), nearly matching Ridge’s performance.  
+2. **Controlled complexity**—retains only **9** non‑zero coefficients versus **57** in the Ridge model, dramatically reducing overfitting risk.  
+3. **Better than RFECV**—outperforms the backward‑elimination approach (5 features, 83.40% accuracy) while still providing a sparse, interpretable solution.  
+4. **Multicollinearity mitigation**—automatically zeros out redundant mid‑game metrics, stabilizing coefficient estimates and enhancing generalization.  
 
 
 
@@ -318,3 +319,23 @@ Model_selection_df.loc[len(Model_selection_df)] = new_row
 | Nominal      | `league` (one‑hot encoded)                                                                                                                                                                        | `OneHotEncoder`        |
 | Ordinal      | –   
 
+
+-**Model Analysis**
+The model end up having the following predictors:
+'num__goldat25', 'num__xpat25', 'num__csat25', 'num__killsat25', 'num__deathsat25', 'num__opp_goldat25', 'num__opp_xpat25', 'num__opp_csat25', 'num__side_binary'
+
+**Model Analysis**  
+The final LASSO logistic regression model retained **9** mid‑game features with non‑zero coefficients:
+
+- `goldat25`  
+- `xpat25`  
+- `csat25`  
+- `killsat25`  
+- `deathsat25`  
+- `opp_goldat25`  
+- `opp_xpat25`  
+- `opp_csat25`  
+- `side_binary`  
+
+> **Interpretation:**  
+> These selected predictors underscore the importance of both a team’s own resource accumulation (gold, experience, creep score, kills, deaths) and the opponent’s resource metrics at 25 minutes, as well as map-side assignment (`side_binary`), in forecasting match outcomes. By focusing on this sparse set of highly informative features, the LASSO model delivers robust predictions while mitigating multicollinearity.  
