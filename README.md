@@ -113,12 +113,8 @@ Even after dropping the most obvious redundancies, many of our 25‑minute featu
 - **Task:** Binary classification of match outcome, `result` (1 = win, 0 = loss).  
 - **Features:** All in‑game metrics available at the 25 minute mark **after** the filtering and cleaning steps described in [Data Cleaning and Exploratory Data Analysis](#data-cleaning-and-exploratory-data-analysis). We exclude any variables that aren’t known at minute 25 (e.g. final kill totals).  
 - **Evaluation Metric:** **Accuracy**, defined as the proportion of correct predictions:
-  $$
-    \text{Accuracy}
-    = \frac{\text{Number of correct predictions}}{\text{Total number of predictions}}
-    = \frac{1}{N}\sum_{i=1}^{N} \mathbf{1}\bigl(y_i = \hat y_i\bigr),
-  $$
-  where \(y_i\) is the true label and \(\hat y_i\) is the model’s prediction.  
+  ![Accuracy_formula](images/Accuracy.jpg)
+  where yi is the true label and yi hat is the model’s prediction.  
 - **Prediction Question:**  
   > Can a classifier, given only kills, gold, XP, creep‑score, and objective metrics at minute 25, accurately predict which team will win the match?
 
@@ -320,11 +316,13 @@ new_row = {
 Model_selection_df.loc[len(Model_selection_df)] = new_row
 ```
 -**Model Properties**
+
 | Data Type    | Features                                                                                                                                                                                           | Processing Method      |
 |--------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------|
 | Quantitative | `goldat25`, `xpat25`, `csat25`, `killsat25`, `deathsat25`,<br>`opp_goldat25`, `opp_xpat25`, `opp_csat25`, `opp_killsat25`, `opp_assistsat25`, `opp_deathsat25`,<br>`golddiffat25`, `xpdiffat25`, `csdiffat25`,<br>`gamelength`, `side_binary` | `StandardScaler`       |
 | Nominal      | `league` (one‑hot encoded)                                                                                                                                                                        | `OneHotEncoder`        |
 | Ordinal      | –   
+
 
 **Model Analysis**  
 The final LASSO logistic regression model retained **9** mid‑game features with non‑zero coefficients:
