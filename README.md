@@ -90,10 +90,10 @@ In this project, we explore whether in-game features at the 25 minute cutoff can
 | LOLTMNT06_13667 |        0 |      43673 |    55802 |      900 |           6 |            7 |          42984 |        54096 |          893 |
 
 
-**TODO: Univariate Analysis**
+**Univariate Analysis**
 <iframe src="images/fig_uni1.html" width="800" height="600" frameborder="0" ></iframe>
 
-**TODO: Bivariate Analyses and Aggregations**
+**Bivariate Analyses and Aggregations**
 <iframe src="images/figbi1.html" width="800" height="600" frameborder="0" ></iframe>
 
 <iframe src="images/aggregate_table.html" width="800" height="400" frameborder="0"></iframe>
@@ -158,17 +158,14 @@ pipeline = make_pipeline(
 
 pipeline.fit(X_train, y_train)
 
-# Predictions
 y_test_pred = pipeline.predict(X_test)
 y_train_pred = pipeline.predict(X_train)
 
-# Metrics
 test_acc   = accuracy_score(y_test,   y_test_pred)
 train_acc  = accuracy_score(y_train,  y_train_pred)
 roc_auc    = roc_auc_score(y_test,    pipeline.decision_function(X_test))
 num_coeffs = np.count_nonzero(pipeline.named_steps['logisticregression'].coef_)
 
-# Tabulate results
 results = {
     'Train Accuracy': train_acc,
     'Test Accuracy':  test_acc,
