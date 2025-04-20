@@ -138,12 +138,6 @@ X_train, X_test, y_train, y_test = train_test_split(
 **Baseline Model Pipeline:**
 
 ```python
-from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import StandardScaler
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score, roc_auc_score
-import numpy as np
-
 pipeline = make_pipeline(
     StandardScaler(),
     LogisticRegression(
