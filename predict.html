@@ -1,15 +1,33 @@
 <div style="max-width:400px;margin:1em auto;">
     <h3>🎮 Predict LOL Match Outcome</h3>
     <form id="predictForm">
-      <label>goldat25: <input type="number" id="goldat25" required></label><br>
-      <label>xpat25:   <input type="number" id="xpat25"   required></label><br>
-      <label>csat25:   <input type="number" id="csat25"   required></label><br>
-      <label>killsat25:<input type="number" id="killsat25"required></label><br>
-      <label>deathsat25:<input type="number"id="deathsat25"required></label><br>
-      <label>opp_goldat25:<input type="number"id="opp_goldat25"required></label><br>
-      <label>opp_xpat25: <input type="number"id="opp_xpat25" required></label><br>
-      <label>opp_csat25: <input type="number"id="opp_csat25" required></label><br>
-      <label>side_binary (0=Blue,1=Red):<input type="number" min="0" max="1" id="side_binary" required></label><br><br>
+        <label for="goldat25">Team Total Gold at 25‑Minute Mark:</label>
+        <input type="number" id="goldat25" required><br>
+        
+        <label for="xpat25">Team Total Experience Points at 25‑Minute Mark:</label>
+        <input type="number" id="xpat25" required><br>
+        
+        <label for="csat25">Team Creep Score (Minion Kills) at 25 Minutes:</label>
+        <input type="number" id="csat25" required><br>
+        
+        <label for="killsat25">Team Total Kills by 25 Minutes:</label>
+        <input type="number" id="killsat25" required><br>
+        
+        <label for="deathsat25">Team Total Deaths by 25 Minutes:</label>
+        <input type="number" id="deathsat25" required><br>
+        
+        <label for="opp_goldat25">Opponent Total Gold at 25‑Minute Mark:</label>
+        <input type="number" id="opp_goldat25" required><br>
+        
+        <label for="opp_xpat25">Opponent Total Experience at 25‑Minute Mark:</label>
+        <input type="number" id="opp_xpat25" required><br>
+        
+        <label for="opp_csat25">Opponent Creep Score at 25 Minutes:</label>
+        <input type="number" id="opp_csat25" required><br>
+        
+        <label for="side_binary">Team Side (0 = Blue, 1 = Red):</label>
+        <input type="number" id="side_binary" min="0" max="1" required><br><br>
+        
       <button type="submit">Predict Win %!</button>
     </form>
     <p id="result" style="font-weight:bold;"></p>
