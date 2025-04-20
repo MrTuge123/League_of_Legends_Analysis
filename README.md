@@ -313,11 +313,6 @@ Model_selection_df.loc[len(Model_selection_df)] = new_row
 | Nominal      | `league` (one‑hot encoded)                                                                                                                                                                        | `OneHotEncoder`        |
 | Ordinal      | –   
 
-
--**Model Analysis**
-The model end up having the following predictors:
-'num__goldat25', 'num__xpat25', 'num__csat25', 'num__killsat25', 'num__deathsat25', 'num__opp_goldat25', 'num__opp_xpat25', 'num__opp_csat25', 'num__side_binary'
-
 **Model Analysis**  
 The final LASSO logistic regression model retained **9** mid‑game features with non‑zero coefficients:
 
@@ -331,5 +326,8 @@ The final LASSO logistic regression model retained **9** mid‑game features wit
 - `opp_csat25`  
 - `side_binary`  
 
+The **best hyperparameter** (λ) selected is **21.54**, corresponding to an inverse‑penalty strength \(C = 0.0464\). This value was chosen automatically by `LogisticRegressionCV`, which integrates the regularization‑strength search into its `fit` routine. By using `LogisticRegressionCV` rather than a separate `GridSearchCV`, we leverage solver optimizations (e.g. warm‑starts and efficient coordinate descent for L1) and keep our code concise—no external parameter grid or nested cross‑validation is required, yet we still obtain the optimal penalty for our model.  
+
+
 > **Interpretation:**  
-> These selected predictors underscore the importance of both a team’s own resource accumulation (gold, experience, creep score, kills, deaths) and the opponent’s resource metrics at 25 minutes, as well as map-side assignment (`side_binary`), in forecasting match outcomes. By focusing on this sparse set of highly informative features, the LASSO model delivers robust predictions while mitigating multicollinearity.  
+> These selected predictors underscore the importance of both a team’s own resource accumulation (gold, experience, creep score, kills, deaths) and the opponent’s resource metrics at 25 minutes, as well as map-side assignment (`side_binary`), in forecasting match outcomes. By zeroing out redundant features, the LASSO model stabilizes coefficient estimates, mitigates multicollinearity, and focuses on the most informative mid‑game indicators—delivering a sparse yet highly discriminative solution.
