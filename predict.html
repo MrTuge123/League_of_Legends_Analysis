@@ -1,0 +1,47 @@
+<div style="max-width:400px;margin:1em auto;">
+    <h3>🎮 Predict LOL Match Outcome</h3>
+    <form id="predictForm">
+      <label>goldat25: <input type="number" id="goldat25" required></label><br>
+      <label>xpat25:   <input type="number" id="xpat25"   required></label><br>
+      <label>csat25:   <input type="number" id="csat25"   required></label><br>
+      <label>killsat25:<input type="number" id="killsat25"required></label><br>
+      <label>deathsat25:<input type="number"id="deathsat25"required></label><br>
+      <label>opp_goldat25:<input type="number"id="opp_goldat25"required></label><br>
+      <label>opp_xpat25: <input type="number"id="opp_xpat25" required></label><br>
+      <label>opp_csat25: <input type="number"id="opp_csat25" required></label><br>
+      <label>side_binary (0=Blue,1=Red):<input type="number" min="0" max="1" id="side_binary" required></label><br><br>
+      <button type="submit">Predict Win %!</button>
+    </form>
+    <p id="result" style="font-weight:bold;"></p>
+  </div>
+  
+  <script>
+    // ← replace these with your actual exported values
+    const INTERCEPT = -2.3456;
+    const COEFFS = {
+    'num__goldat25':    1.067025652955457,
+    'num__xpat25':      0.4510989408105142,
+    'num__csat25':      0.13120807738532853,
+    'num__killsat25':   0.2395581097696759,
+    'num__deathsat25':  -0.1854600337761948,
+    'num__opp_goldat25': -1.0255959899001337,
+    'num__opp_xpat25':   -0.524448390866887,
+    'num__opp_csat25':   -0.07209074041461708,
+    'num__side_binary':  0.030975846460599327,
+    };
+  
+    document
+      .getElementById("predictForm")
+      .addEventListener("submit", e => {
+        e.preventDefault();
+        let sum = INTERCEPT;
+        for (let k in COEFFS) {
+          const val = parseFloat(document.getElementById(k.split("__")[1]).value);
+          sum += COEFFS[k] * val;
+        }
+        const p = 1 / (1 + Math.exp(-sum));
+        document.getElementById("result").innerText =
+          "Win probability: " + (p*100).toFixed(1) + "%";
+      });
+  </script>
+  

@@ -17,6 +17,12 @@
 
 ---
 
+<h2>At the start, try the model Yourself 🎲</h2>
+<iframe src="predict.html"
+        width="450" height="550"
+        frameborder="0">
+</iframe>
+
 ## Introduction
 
 In this project, we explore whether in-game features at the 25 minute cutoff can accurately predict the outcome (win/loss) of League of Legends matches. Our full dataset consists of approximately **9800** matches in 2024 sourced from OraclesElixir, which is a public dataset under Riot Games, containing information on champion selections, team compositions, player roles, and match metadata.
