@@ -1,4 +1,4 @@
-# Categorization Model of Predicting LOL Game Outcomes
+# Checkpoint Champion -- Predicting Winners at 25
 
 **Authors:**
 - Xingzhi Cui ([tigercui@umich.edu](mailto:tigercui@umich.edu))
