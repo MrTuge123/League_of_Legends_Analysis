@@ -195,3 +195,22 @@ The baseline logistic regression achieves 84.0% accuracy on the training set and
 
 
 
+## Testing for Potential Improvement
+
+Given the issues identified in the previous sections, standard logistic regression models—which rely on ordinary least squares (OLS)—are sensitive to multicollinearity among predictors. Multicollinearity inflates variance, destabilizes coefficient estimates, and reduces the interpretability and reliability of our results.
+
+To address these limitations, we now turn to regularization methods and feature-selection approaches explicitly designed to handle multicollinearity:
+
+- **Ridge Logistic Regression (L2 Regularization)**  
+  Applies penalty terms to shrink coefficient estimates towards zero, effectively stabilizing estimates and reducing variance.
+
+Implementation code:
+```python
+
+```
+
+- **LASSO Logistic Regression (L1 Regularization)**  
+  Performs variable selection by shrinking some coefficient estimates exactly to zero, thus addressing multicollinearity by eliminating redundant predictors.
+
+- **Backward Elimination via Recursive Feature Elimination (RFE)**  
+  Iteratively removes the least informative features based on model performance, directly targeting problematic correlations.
