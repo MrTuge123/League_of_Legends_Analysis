@@ -16,12 +16,19 @@
 6. [Model Comparison and Final Selection](#final-model)
 
 ---
+## Spoiler Alert! 🎲
 
-<h2>At the start, try the model Yourself 🎲</h2>
-<iframe src="predict.html"
-        width="450" height="550"
-        frameborder="0">
+> **Try the model yourself first!**
+
+<iframe
+  src="predict.html"
+  width="450"
+  height="550"
+  frameborder="0"
+  title="Predict LOL Match Outcome">
 </iframe>
+
+Read on to see how we built the model!  
 
 ## Introduction
 
