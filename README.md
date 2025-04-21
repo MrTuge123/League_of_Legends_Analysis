@@ -338,7 +338,7 @@ The final LASSO logistic regression model retained **9** mid‑game features wit
 - `opp_csat25`  
 - `side_binary`  
 
-<iframe src="images/lasso_coefficients.html" width="800" height="600" frameborder="0"></iframe>
+<iframe src="images/lasso_feature_importance_explained.html" width="800" height="600" frameborder="0"></iframe>
 
 The **best hyperparameter** (λ) selected is **21.54**, corresponding to an inverse‑penalty strength \(C = 0.0464\). This value was chosen automatically by `LogisticRegressionCV`, which integrates the regularization‑strength search into its `fit` routine. By using `LogisticRegressionCV` rather than a separate `GridSearchCV`, we leverage solver optimizations (e.g. warm‑starts and efficient coordinate descent for L1) and keep our code concise—no external parameter grid or nested cross‑validation is required, yet we still obtain the optimal penalty for our model.  
 
