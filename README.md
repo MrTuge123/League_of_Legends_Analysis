@@ -93,11 +93,20 @@ In this project, we explore whether in-game features at the 25 minute cutoff can
 **Univariate Analysis**
 The histogram shows the distribution of gold difference at 25 minutes, calculated as a team’s gold minus their opponent’s. As expected, the distribution is perfectly symmetrical around zero, since one team’s gain is the other’s loss. This confirms that the feature captures relative advantage, which indicates how much more or less gold a team has compared to their opponent. Relative advantage is a key factor in predicting match outcomes. A value above zero means the team is ahead; below zero means they’re behind. Since golddiffat25 directly reflects in-game dominance, it serves as a highly informative predictor. While most games are fairly balanced (clustered near 0), the long tails represent matches where one team gains a significant economic lead, which often correlates with winning.
 
-<iframe src="images/univariate_plot.html" width="800" height="600" frameborder="0" ></iframe>
+<iframe src="images/golddiffat25.html" width="800" height="600" frameborder="0" ></iframe>
+
+<iframe src="images/goldat25_vs_result.html" width="800" height="600" frameborder="0" ></iframe>
+
+
 
 **Bivariate Analyses and Aggregations**
 The boxplot compares the gold difference at the 25 minute mark between winning and losing teams. Winning teams consistently showed a strong positive gold difference, while the losing teams often fell behind. The side by side visualization highlights the predictive power of this single feature: the teams leading in gold at minute 25 have a significant competitive advantage and are more likely to win the game match. Thus, economic leads are strongly associated with successful match outcomes. 
-<iframe src="images/bivariate_plot.html" width="800" height="600" frameborder="0" ></iframe>
+<iframe src="images/goldat25_vs_result.html" width="800" height="600" frameborder="0" ></iframe>
+
+<iframe src="images/killsat25_vs_result.html" width="800" height="600" frameborder="0" ></iframe>
+
+<iframe src="images/gold_vs_kills_by_result.html" width="800" height="600" frameborder="0" ></iframe>
+
 
 The aggregate table below presents the average values of critical mid-game performance metrics at 25 minutes, grouped by match outcome. Winning teams (result = 1) consistently outperform the losing teams (result = 0) in every key statistic: gold, experience, creep scores, kills, whil also resulting in less deaths. These patterns validate that mid game performance strongly correlates with success, highlighting the predictive value of these features for the classification model.
 <iframe src="images/aggregate_table.html" width="800" height="400" frameborder="0"></iframe>
@@ -338,7 +347,7 @@ The final LASSO logistic regression model retained **9** mid‑game features wit
 - `opp_csat25`  
 - `side_binary`  
 
-<iframe src="images/lasso_coefficients.html" width="800" height="600" frameborder="0"></iframe>
+<iframe src="images/lasso_feature_importance_explained.html" width="800" height="600" frameborder="0"></iframe>
 
 The **best hyperparameter** (λ) selected is **21.54**, corresponding to an inverse‑penalty strength \(C = 0.0464\). This value was chosen automatically by `LogisticRegressionCV`, which integrates the regularization‑strength search into its `fit` routine. By using `LogisticRegressionCV` rather than a separate `GridSearchCV`, we leverage solver optimizations (e.g. warm‑starts and efficient coordinate descent for L1) and keep our code concise—no external parameter grid or nested cross‑validation is required, yet we still obtain the optimal penalty for our model.  
 
