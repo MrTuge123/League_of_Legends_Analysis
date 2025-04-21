@@ -137,8 +137,8 @@ Even after dropping the most obvious redundancies, many of our 25‑minute featu
 
 To establish a performance benchmark, we trained a **simple logistic regression** on our 25‑minute features for the team, exluding the information of their opponents.  
 
-**1. Data Partitioning**  
-We split the cleaned dataset into training (70%) and test (30%) sets, preserving the win/loss balance via stratification:
+**Data Partitioning**  
+We split the cleaned dataset into training (70%) and test (30%) sets, preserving the win/loss balance via stratification.
 
 **Baseline Model Information**
 
