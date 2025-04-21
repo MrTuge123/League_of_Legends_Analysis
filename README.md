@@ -93,11 +93,11 @@ In this project, we explore whether in-game features at the 25 minute cutoff can
 **Univariate Analysis**
 The histogram shows the distribution of gold difference at 25 minutes, calculated as a team’s gold minus their opponent’s. As expected, the distribution is perfectly symmetrical around zero, since one team’s gain is the other’s loss. This confirms that the feature captures relative advantage, which indicates how much more or less gold a team has compared to their opponent. Relative advantage is a key factor in predicting match outcomes. A value above zero means the team is ahead; below zero means they’re behind. Since golddiffat25 directly reflects in-game dominance, it serves as a highly informative predictor. While most games are fairly balanced (clustered near 0), the long tails represent matches where one team gains a significant economic lead, which often correlates with winning.
 
-<iframe src="images/fig_uni1.html" width="800" height="600" frameborder="0" ></iframe>
+<iframe src="images/univariate_plot.html" width="800" height="600" frameborder="0" ></iframe>
 
 **Bivariate Analyses and Aggregations**
 The boxplot compares the gold difference at the 25 minute mark between winning and losing teams. Winning teams consistently showed a strong positive gold difference, while the losing teams often fell behind. The side by side visualization highlights the predictive power of this single feature: the teams leading in gold at minute 25 have a significant competitive advantage and are more likely to win the game match. Thus, economic leads are strongly associated with successful match outcomes. 
-<iframe src="images/figbi1.html" width="800" height="600" frameborder="0" ></iframe>
+<iframe src="images/bivariate_plot.html" width="800" height="600" frameborder="0" ></iframe>
 
 The aggregate table below presents the average values of critical mid-game performance metrics at 25 minutes, grouped by match outcome. Winning teams (result = 1) consistently outperform the losing teams (result = 0) in every key statistic: gold, experience, creep scores, kills, whil also resulting in less deaths. These patterns validate that mid game performance strongly correlates with success, highlighting the predictive value of these features for the classification model.
 <iframe src="images/aggregate_table.html" width="800" height="400" frameborder="0"></iframe>
