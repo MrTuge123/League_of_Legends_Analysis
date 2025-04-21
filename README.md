@@ -140,54 +140,7 @@ To establish a performance benchmark, we trained a **simple logistic regression*
 **1. Data Partitioning**  
 We split the cleaned dataset into training (70%) and test (30%) sets, preserving the win/loss balance via stratification:
 
-```python
-from sklearn.model_selection import train_test_split
-
-y = data['result']
-X = data[[
-    'goldat25', 'xpat25', 'csat25',
-    'killsat25', 'deathsat25'
-]]
-
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y,
-    test_size=0.30,
-    stratify=y,
-    random_state=123
-)
-```
-
-**Baseline Model Pipeline:**
-
-```python
-pipeline = make_pipeline(
-    StandardScaler(),
-    LogisticRegression(
-        penalty='l2',
-        solver='liblinear',
-        random_state=398
-    )
-)
-
-pipeline.fit(X_train, y_train)
-
-y_test_pred = pipeline.predict(X_test)
-y_train_pred = pipeline.predict(X_train)
-
-test_acc   = accuracy_score(y_test,   y_test_pred)
-train_acc  = accuracy_score(y_train,  y_train_pred)
-roc_auc    = roc_auc_score(y_test,    pipeline.decision_function(X_test))
-num_coeffs = np.count_nonzero(pipeline.named_steps['logisticregression'].coef_)
-
-results = {
-    'Train Accuracy': train_acc,
-    'Test Accuracy':  test_acc,
-    'ROC‑AUC':        roc_auc,
-    'Non‑zero Coeff': num_coeffs
-}
-```
-
-**Model Information**
+**Baseline Model Information**
 
 | Data Type    | Features                                                                                                       | Processing Method |
 |--------------|----------------------------------------------------------------------------------------------------------------|-------------------|
@@ -260,64 +213,6 @@ Each approach offers a robust mechanism for stabilizing estimates and improving 
 - The **Baseline** logistic regression lags behind on both accuracy and discrimination (AUC).
 
 **Final Model Choice:**  
-
-```python
-data['side_binary'] = data['side'].map({'Blue': 0, 'Red': 1})
-cols = ['gameid','result','goldat25', 'xpat25', 'csat25', 'killsat25','deathsat25', 'opp_goldat25', 'opp_xpat25', 'opp_csat25', 'side_binary' ,'gamelength', 'league']
-data = data[cols]
-y = data['result']
-X = data[['goldat25', 'xpat25', 'csat25', 'killsat25','deathsat25', 'opp_goldat25', 'opp_xpat25', 'opp_csat25', 'side_binary' ,'gamelength', 'league']]
-X_train, X_test, y_train, y_test = train_test_split(X,y,test_size = 0.3,random_state=103) 
-
-numeric_feats = ['goldat25', 'xpat25', 'csat25', 'killsat25','deathsat25', 'opp_goldat25', 'opp_xpat25', 'opp_csat25', 'side_binary' ,'gamelength']
-categorical_feats = ['league']
-
-preprocessor = ColumnTransformer([
-    ('num', StandardScaler(), numeric_feats),
-    ('cat', OneHotEncoder(handle_unknown='ignore'), categorical_feats)
-], remainder='drop') 
-
-pipeline = make_pipeline(
-    preprocessor,
-    LogisticRegressionCV(
-        cv=5,
-        penalty='l1',
-        solver='liblinear',
-        random_state=398
-    )
-)
-
-pipeline.fit(X_train, y_train)
-
-y_test_pred = pipeline.predict(X_test)
-y_test_score = pipeline.decision_function(X_test)
-testing_accuracy = accuracy_score(y_test, y_test_pred)
-roc_auc          = roc_auc_score(y_test, y_test_score)
-
-log_reg_cv = pipeline.named_steps['logisticregressioncv']
-
-coef_series = pd.Series(
-    log_reg_cv.coef_[0],
-    index=feature_names
-)
-
-selected_features = coef_series[coef_series != 0].index.tolist()
-num_non_zero = len(selected_features)
-
-y_train_pred = pipeline.predict(X_train)
-training_accuracy = accuracy_score(y_train, y_train_pred)
-
-new_row = {
-    'Model Name':        'LogisticRegressionCV_L1',
-    'num_non_zero':      num_non_zero,
-    'training_accuracy': training_accuracy,
-    'testing_accuracy':  testing_accuracy,
-    'ROC_accuracy':      roc_auc
-}
-
-Model_selection_df.loc[len(Model_selection_df)] = new_row
-```
-
 We select the **LASSO Logistic Regression** as our final model based on its superior balance of performance, sparsity, and stability:
 
 1. **Strong performance lift**—achieves **83.61%** test accuracy (up from 81.25% with the baseline) and **ROC‑AUC = 0.9214** (up from 0.8976), nearly matching Ridge’s performance.  
