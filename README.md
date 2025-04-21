@@ -95,6 +95,12 @@ The histogram shows the distribution of gold difference at 25 minutes, calculate
 
 <iframe src="images/univariate_plot.html" width="800" height="600" frameborder="0" ></iframe>
 
+<div style="display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
+  <iframe src="images/univariate_plot.html" width="49%" height="500" frameborder="0"></iframe>
+  <iframe src="images/univariate_plot.html" width="49%" height="500" frameborder="0"></iframe>
+</div>
+
+
 **Bivariate Analyses and Aggregations**
 The boxplot compares the gold difference at the 25 minute mark between winning and losing teams. Winning teams consistently showed a strong positive gold difference, while the losing teams often fell behind. The side by side visualization highlights the predictive power of this single feature: the teams leading in gold at minute 25 have a significant competitive advantage and are more likely to win the game match. Thus, economic leads are strongly associated with successful match outcomes. 
 <iframe src="images/bivariate_plot.html" width="800" height="600" frameborder="0" ></iframe>
