@@ -91,16 +91,16 @@ In this project, we explore whether in-game features at the 25 minute cutoff can
 
 
 **Univariate Analysis**
-The histogram shows the distribution of gold difference at 25 minutes, calculated as a team’s gold minus their opponent’s. As expected, the distribution is perfectly symmetrical around zero, since one team’s gain is the other’s loss. This confirms that the feature captures relative advantage, which indicates how much more or less gold a team has compared to their opponent. Relative advantage is a key factor in predicting match outcomes. A value above zero means the team is ahead; below zero means they’re behind. Since golddiffat25 directly reflects in-game dominance, it serves as a highly informative predictor. While most games are fairly balanced (clustered near 0), the long tails represent matches where one team gains a significant economic lead, which often correlates with winning.
+The histogram shows the distribution of gold difference at 25 minutes, calculated as a team’s gold minus their opponent’s. As expected, the distribution is perfectly symmetrical around zero, since one team’s gain is the other’s loss. This confirms that the feature captures relative advantage, which indicates how much more or less gold a team has compared to their opponent. Relative advantage is a key factor in predicting match outcomes. A value above zero means the team is ahead; below zero means they’re behind. Since golddiffat25 directly reflects in-game dominance, it serves as a highly informative predictor. While most games are fairly balanced (clustered near 0), the long tails represent matches where one team gains a significant economic lead, which often correlates with winning. The histogram for distribution of team gold at 25 minutes showcases how most teams cluster around 42k ~ 42.999k gold, indicating the consistent game pacing across matches.
 
 <iframe src="images/golddiffat25.html" width="800" height="600" frameborder="0" ></iframe>
 
-<iframe src="images/goldat25_vs_result.html" width="800" height="600" frameborder="0" ></iframe>
+<iframe src="images/goldat25.html" width="800" height="600" frameborder="0" ></iframe>
 
 
 
 **Bivariate Analyses and Aggregations**
-The boxplot compares the gold difference at the 25 minute mark between winning and losing teams. Winning teams consistently showed a strong positive gold difference, while the losing teams often fell behind. The side by side visualization highlights the predictive power of this single feature: the teams leading in gold at minute 25 have a significant competitive advantage and are more likely to win the game match. Thus, economic leads are strongly associated with successful match outcomes. 
+The boxplot compares the gold difference at the 25 minute mark between winning and losing teams. Winning teams consistently showed a strong positive gold difference, while the losing teams often fell behind. The side by side visualization highlights the predictive power of this single feature: the teams leading in gold at minute 25 have a significant competitive advantage and are more likely to win the game match. Thus, economic leads are strongly associated with successful match outcomes. The boxplot for kills at 25 minutes vs results showcases that the teams with more kills at the 25 minute mark are more likely to win, demonstrating the importance of kills. The boxplot for kills at 25 minutes vs gold at 25 minutes reveal the positive relationship between kills and gold at 25 minutes, and we see clusters of winners towards the upper right. This reinforces how kills often translate to stronger economies at match wins.
 <iframe src="images/goldat25_vs_result.html" width="800" height="600" frameborder="0" ></iframe>
 
 <iframe src="images/killsat25_vs_result.html" width="800" height="600" frameborder="0" ></iframe>
