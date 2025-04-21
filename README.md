@@ -258,7 +258,7 @@ We select the **LASSO Logistic Regression** as our final model based on its supe
 
 ```python
 data['side_binary'] = data['side'].map({'Blue': 0, 'Red': 1})
-cols = [['gameid','result','goldat25', 'xpat25', 'csat25', 'killsat25','deathsat25', 'opp_goldat25', 'opp_xpat25', 'opp_csat25', 'side_binary' ,'gamelength', 'league']]
+cols = ['gameid','result','goldat25', 'xpat25', 'csat25', 'killsat25','deathsat25', 'opp_goldat25', 'opp_xpat25', 'opp_csat25', 'side_binary' ,'gamelength', 'league']
 data = data[cols]
 y = data['result']
 X = data[['goldat25', 'xpat25', 'csat25', 'killsat25','deathsat25', 'opp_goldat25', 'opp_xpat25', 'opp_csat25', 'side_binary' ,'gamelength', 'league']]
