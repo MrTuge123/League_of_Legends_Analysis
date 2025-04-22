@@ -77,7 +77,10 @@ In this project, we explore whether in-game features at the 25 minute cutoff can
 
 3. **Imputation Strategies and Missing‑Value Handling**
 - **Assessment of missingness:** We found that rows lacking any 25‑minute metric (gold, kills, objectives, etc.) account for roughly **46.58%** of our team‑level data.
-- **Rationale for dropping:** A missing 25‑minute value indicates that the game state wasn’t recorded at that cut‑off, so these rows contain no usable mid‑game information. Imputing them would introduce unfounded assumptions, so we removed all records with missing 25‑minute features. ​
+- **Rationale for dropping:** A missing 25‑minute value indicates that the game state wasn’t recorded at that cut‑off, so these rows contain no usable mid‑game information. Imputing them would introduce unfounded assumptions, so we removed all records with missing 25‑minute features. ​Below is a visualization of the row count comparison before and after dropping missing values. 
+- **Filling in Missing Values** If one of the values was missing in the 25 minute metrics, all the other values for the 25 minute features were missing as well. We did not fill in missing values, instead we removed the entire rows.
+
+<iframe src="images/row_count_comparison.html" width="800" height="600" frameborder="0" ></iframe>
 
 **Head of Cleaned Data With Relevant Columns:**
 
@@ -264,3 +267,19 @@ The final LASSO logistic regression model reveals that:
 - Even minor features like side_binary and opp_csat25 show that map side and farming deficits can subtly influence outcomes.
 
 Overall, the model captures the importance of relative mid-game strength — highlighting how both a team’s own performance and their opponent’s stats impact win probability.
+
+**Interpretation of Confusion Matrix**  
+The confusion matrix showcases that the final LASSO logistic regression model performs well at distinguishing match outcomes. Out of all test cases:
+
+- 1939 wins were correctly predicted as wins (true positives)
+
+- 1989 losses were correctly predicted as losses (true negatives)
+
+- 398 wins were incorrectly predicted as losses (false negatives)
+
+- 372 losses were incorrectly predicted as wins (false positives)
+
+Overall, the model achieves a balanced and accurate classification of both winning and losing teams, with relatively few misclassifications.
+
+
+<img src="images/confusion_matrix_final_model.png">
