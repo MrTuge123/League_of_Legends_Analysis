@@ -253,9 +253,9 @@ The **best hyperparameter** (λ) selected is **21.54**, corresponding to an inve
 **Interpretation of Feature Coefficients:**  
 The final LASSO logistic regression model reveals that:
 
-- goldat25 has the highest positive coefficient, meaning teams with more gold at 25 minutes are significantly more likely to win.
+- **goldat25** has the highest positive coefficient, meaning teams with more gold at 25 minutes are significantly more likely to win.
 
-- In contrast, opp_goldat25 and opp_xpat25 have the strongest negative coefficients, indicating that when the opponent has more resources, the chance of winning decreases.
+- In contrast, **opp_goldat25** and **opp_xpat25** have the strongest negative coefficients, indicating that when the opponent has more resources, the chance of winning decreases.
 
 - Other positively weighted features — xpat25, killsat25, and csat25 — emphasize the value of experience, kills, and creep score accumulation.
 
