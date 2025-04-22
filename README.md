@@ -253,7 +253,8 @@ The **best hyperparameter** (λ) selected is **21.54**, corresponding to an inve
 > **Interpretation of Model:**  
 > These selected predictors underscore the importance of both a team’s own resource accumulation (gold, experience, creep score, kills, deaths) and the opponent’s resource metrics at 25 minutes, as well as map-side assignment (`side_binary`), in forecasting match outcomes. By zeroing out redundant features, the LASSO model stabilizes coefficient estimates, mitigates multicollinearity, and focuses on the most informative mid‑game indicators—delivering a sparse yet highly discriminative solution.
 
-**Interpretation of Feature Coefficients:**  
+
+**Interpretation of Feature Coefficients**  
 The final LASSO logistic regression model reveals that:
 
 - **goldat25** has the highest positive coefficient, meaning teams with more gold at 25 minutes are significantly more likely to win.
@@ -267,6 +268,7 @@ The final LASSO logistic regression model reveals that:
 - Even minor features like side_binary and opp_csat25 show that map side and farming deficits can subtly influence outcomes.
 
 Overall, the model captures the importance of relative mid-game strength — highlighting how both a team’s own performance and their opponent’s stats impact win probability.
+
 
 **Interpretation of Confusion Matrix**  
 The confusion matrix showcases that the final LASSO logistic regression model performs well at distinguishing match outcomes. Out of all test cases:
