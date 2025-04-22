@@ -34,7 +34,7 @@ Read on to see how we built the model!
 
 In this project, we explore whether in-game features at the 25 minute cutoff can accurately predict the outcome (win/loss) of League of Legends matches. Our full dataset consists of approximately **9800** matches in 2024 sourced from OraclesElixir, which is a public dataset under Riot Games, containing information on champion selections, team compositions, player roles, and match metadata.
 
-- **Central Question:** Can a classification model leverage in-game kills, gold, experience information at the 25 minute checkpoint to predict the game result?
+- **Central Question:** Can a classification model leverage in-game kills, gold, experience information at the 25 minute checkpoint to predict the game result? If so, what predictor is the most influential?
 - **Motivation:** Predictive insights can inform esports strategy and enhance spectator engagement by offering data-driven match forecasts.  
 - **Dataset Details:**  
   - **Rows:** 117600, 2 rows per game
@@ -79,15 +79,15 @@ In this project, we explore whether in-game features at the 25 minute cutoff can
 - **Assessment of missingness:** We found that rows lacking any 25‑minute metric (gold, kills, objectives, etc.) account for roughly **46.58%** of our team‑level data.
 - **Rationale for dropping:** A missing 25‑minute value indicates that the game state wasn’t recorded at that cut‑off, so these rows contain no usable mid‑game information. Imputing them would introduce unfounded assumptions, so we removed all records with missing 25‑minute features. ​
 
-**Head of Cleaned Data:**
+**Head of Cleaned Data With Relevant Columns:**
 
-| gameid          |   result |   goldat25 |   xpat25 |   csat25 |   killsat25 |   deathsat25 |   opp_goldat25 |   opp_xpat25 |   opp_csat25 |
-|:----------------|---------:|-----------:|---------:|---------:|------------:|-------------:|---------------:|-------------:|-------------:|
-| LOLTMNT06_13630 |        0 |      45581 |    53080 |      904 |           9 |            7 |          44394 |        55632 |          899 |
-| LOLTMNT06_13630 |        1 |      44394 |    55632 |      899 |           7 |            9 |          45581 |        53080 |          904 |
-| LOLTMNT06_12701 |        0 |      40305 |    50828 |      864 |           4 |            9 |          44748 |        57191 |          878 |
-| LOLTMNT06_12701 |        1 |      44748 |    57191 |      878 |           9 |            4 |          40305 |        50828 |          864 |
-| LOLTMNT06_13667 |        0 |      43673 |    55802 |      900 |           6 |            7 |          42984 |        54096 |          893 |
+| gameid           |   result |   goldat25 |   xpat25 |   csat25 |   opp_goldat25 |   opp_xpat25 |   opp_csat25 |   golddiffat25 |   xpdiffat25 |   csdiffat25 |   killsat25 |   assistsat25 |   deathsat25 |   opp_killsat25 |   opp_assistsat25 |   opp_deathsat25 | side   |   gamelength | league   |
+|:-----------------|---------:|-----------:|---------:|---------:|---------------:|-------------:|-------------:|---------------:|-------------:|-------------:|------------:|--------------:|-------------:|----------------:|------------------:|-----------------:|:-------|-------------:|:---------|
+| LOLTMNT99_132542 |        1 |      52523 |    58329 |      831 |          39782 |        47502 |          752 |          12741 |        10827 |           79 |          20 |            47 |            7 |               7 |                14 |               20 | Blue   |         1446 | TSC      |
+| LOLTMNT99_132542 |        0 |      39782 |    47502 |      752 |          52523 |        58329 |          831 |         -12741 |       -10827 |          -79 |           7 |            14 |           20 |              20 |                47 |                7 | Red    |         1446 | TSC      |
+| LOLTMNT99_132665 |        1 |      45691 |    55221 |      850 |          44232 |        51828 |          825 |           1459 |         3393 |           25 |          17 |            28 |           11 |              11 |                15 |               17 | Blue   |         2122 | TSC      |
+| LOLTMNT99_132665 |        0 |      44232 |    51828 |      825 |          45691 |        55221 |          850 |          -1459 |        -3393 |          -25 |          11 |            15 |           17 |              17 |                28 |               11 | Red    |         2122 | TSC      |
+| LOLTMNT99_132755 |        1 |      43051 |    53899 |      822 |          41959 |        51633 |          854 |           1092 |         2266 |          -32 |          10 |            19 |            7 |               7 |                11 |               10 | Blue   |         2099 | TSC      |
 
 
 **Univariate Analysis**
@@ -129,8 +129,7 @@ Even after dropping the most obvious redundancies, many of our 25‑minute featu
   ![Accuracy_formula](images/Accuracy.jpg)
   where yi is the true label and yi hat is the model’s prediction.  
 - **Prediction Question:**  
-  > Can a classifier, given only kills, gold, XP, creep‑score, and objective metrics at minute 25, accurately predict which team will win the match?
-
+  > What game performance metric at the 25 minute checkpoint is the most influential to the outcome of the match?
 
 
 ## Baseline Model
@@ -248,5 +247,20 @@ The final LASSO logistic regression model retained **9** mid‑game features wit
 The **best hyperparameter** (λ) selected is **21.54**, corresponding to an inverse‑penalty strength \(C = 0.0464\). This value was chosen automatically by `LogisticRegressionCV`, which integrates the regularization‑strength search into its `fit` routine. By using `LogisticRegressionCV` rather than a separate `GridSearchCV`, we leverage solver optimizations (e.g. warm‑starts and efficient coordinate descent for L1) and keep our code concise—no external parameter grid or nested cross‑validation is required, yet we still obtain the optimal penalty for our model.  
 
 
-> **Interpretation:**  
+> **Interpretation of Model:**  
 > These selected predictors underscore the importance of both a team’s own resource accumulation (gold, experience, creep score, kills, deaths) and the opponent’s resource metrics at 25 minutes, as well as map-side assignment (`side_binary`), in forecasting match outcomes. By zeroing out redundant features, the LASSO model stabilizes coefficient estimates, mitigates multicollinearity, and focuses on the most informative mid‑game indicators—delivering a sparse yet highly discriminative solution.
+
+**Interpretation of Feature Coefficients:**  
+The final LASSO logistic regression model reveals that:
+
+- goldat25 has the highest positive coefficient, meaning teams with more gold at 25 minutes are significantly more likely to win.
+
+- In contrast, opp_goldat25 and opp_xpat25 have the strongest negative coefficients, indicating that when the opponent has more resources, the chance of winning decreases.
+
+- Other positively weighted features — xpat25, killsat25, and csat25 — emphasize the value of experience, kills, and creep score accumulation.
+
+- deathsat25 contributes negatively, which aligns with intuition: more deaths generally reflect poor team performance.
+
+- Even minor features like side_binary and opp_csat25 show that map side and farming deficits can subtly influence outcomes.
+
+Overall, the model captures the importance of relative mid-game strength — highlighting how both a team’s own performance and their opponent’s stats impact win probability.
